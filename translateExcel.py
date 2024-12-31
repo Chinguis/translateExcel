@@ -13,7 +13,13 @@ fileName = input("Enter the name of the file you want to translate, including th
 workbook = openpyxl.load_workbook(fileName)
 sheet = workbook.active
 numRows = sheet.max_row
+numCols = sheet.max_column
 print("Number of rows:", numRows)
+print("Number of columns:", numCols)
+
+confirm = input("Are you sure you want to proceed? Enter 'yes' to continue.\n")
+if confirm != "yes":
+    exit()
 
 def make_request(content: str):
     for attempt in range(5):
@@ -38,7 +44,7 @@ def make_request(content: str):
 async def translateRow(i):
     loop = asyncio.get_event_loop()
     row = []
-    for j in range(1, 10):
+    for j in range(1, numCols + 1):
         cell = sheet.cell(i, j)
         row.append(cell.value if cell.value else "None")
     rowStr = "#".join(row)
@@ -49,7 +55,7 @@ async def translateRow(i):
         newRowStr = response.choices[0].message.content
         newRow = newRowStr.split("#")
         tries += 1
-    for j in range(1, 10):
+    for j in range(1, numCols + 1):
         cell = sheet.cell(i, j)
         if newRow[j - 1] != "None":
             cell.value = newRow[j - 1]
