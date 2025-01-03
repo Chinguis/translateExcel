@@ -4,7 +4,11 @@ How to use:
 
 2. Install Python on your computer: https://www.python.org/downloads/
 
-3. Install packages: openai, openpyxl, asyncio
+3. Install packages: 
+    openai, 
+    openpyxl,
+    asyncio,
+    tiktoken
 
 4. Put your Excel file in the same folder as this README
 
