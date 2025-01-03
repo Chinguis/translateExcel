@@ -26,10 +26,10 @@ def make_request(content: str):
         try:
             response = client.chat.completions.create(
                 messages=[
-                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "system", "content": "Translate the input strings, separated by the # character, into English. If a string is already in English, keep it unchanged. Your output must preserve the #-delimited format."},
                     {
                         "role": "user",
-                        "content": "The following are strings delimited by the # character. Translate each string into English, unless it is already in English. Return in the same format as the input. Do not make any notes. Here:\n" + content
+                        "content": content
                     }
                 ],
                 model="gpt-4o-mini"
