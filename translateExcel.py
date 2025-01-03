@@ -3,6 +3,7 @@ import openpyxl
 import datetime
 import time
 import asyncio
+import tiktoken
 
 apiKey = input("Enter your OpenAI API key below\n")
 
@@ -23,6 +24,20 @@ for row in sheet.values:
     concat = "#".join(strs)
     rowStrs.append(concat)
 
+SYSTEM_PROMPT_TOKENS = 36
+COST_PER_MILLION_INPUT = 0.15
+COST_PER_MILLION_OUTPUT = 0.6
+
+encoding = tiktoken.encoding_for_model("gpt-4o-mini")
+inputTokens = SYSTEM_PROMPT_TOKENS * len(rowStrs)
+for rowStr in rowStrs:
+    inputTokens += len(encoding.encode(rowStr))
+
+outputTokens = inputTokens / 2 #estimate
+
+cost = inputTokens * COST_PER_MILLION_INPUT / 1000000 + outputTokens * COST_PER_MILLION_OUTPUT / 1000000
+
+print("This translation will cost about $" + str(cost))
 confirm = input("Are you sure you want to proceed? Enter 'yes' to continue.\n")
 if confirm != "yes":
     exit()
